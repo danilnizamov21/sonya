@@ -1,15 +1,11 @@
-from playwright.sync_api import sync_playwright
+import time
 
+from browserforge.fingerprints import Screen
+from camoufox.sync_api import Camoufox
 
-def main():
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False, channel="chrome")
-        page = browser.new_page()
-        print("new stage")
-        page.goto("https://tgstat.ru/adult")
-        print(page.title())
-    
-        browser.close()
-
-if __name__ == "__main__":
-    main()
+constrains = Screen(max_width=1920, max_height=1080)
+with Camoufox(os="windows", screen=constrains, persistent_context=True,
+        user_data_dir="./camoufox_profile",) as browser:
+    page = browser.new_page()
+    page.goto("https://tgstat.ru/adult")
+    time.sleep(240)

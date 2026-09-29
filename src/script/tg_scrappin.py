@@ -17,7 +17,8 @@ with sync_playwright() as p:
 
     
     page.goto("https://t.me/Betting_Russia77")
-
+    page.on("dialog", lambda dialog: dialog.dismiss())
+    page.get_by_text("Open in Web").click()
     div_button = page.get_by_text("Links").first
     div_button.hover()
     time.sleep(1.21)

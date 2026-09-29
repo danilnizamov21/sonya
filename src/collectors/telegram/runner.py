@@ -1,4 +1,5 @@
 from collectors.telegram.browser import create_browser
+from collectors.telegram.links import collect_links
 from collectors.telegram.navigation import open_channel
 
 
@@ -8,11 +9,11 @@ def collect_channel_links(channel_url: str):
 
         open_channel(page, channel_url)
 
-        return [1, 3, 4]
+        return collect_links(page)
 
 
 def main():
-    a = collect_channel_links("https://google.com")
+    a = collect_channel_links("https://t.me/ALOHADANCEya")
     for item in a:
         print(item)
 

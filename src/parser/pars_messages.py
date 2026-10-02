@@ -8,9 +8,10 @@ with open("tg.html", "r", encoding="utf-8") as f:
         text_block = message.find("div", class_="text-content")
 
         if text_block:
+            for delete in text_block.select(".Reactions, .CommentButton"):
+                delete.decompose()
             text = text_block.get_text(separator="\n", strip=True)
             links = text_block.find_all("a")
-
             clean_links_set = set()
 
             for link in links:

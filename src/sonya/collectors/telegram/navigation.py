@@ -6,15 +6,16 @@ def check_channel_availability(page: Page) -> bool:
     page.wait_for_load_state()
     button_visible = page.locator("text=Request to Join Channel").is_visible()
     error_visible = page.locator("text=Something went wrong").is_visible()
-    return not (button_visible or error_visible)
+    return button_visible or error_visible
 
 
 def open_channel(page: Page, channel_url: str):
 
     # page.on("dialog", lambda dialog: dialog.dismiss())
-    page.goto(channel_url)
-
+    page.goto(channel_url, wait_until="domcontentloaded")
+    page.wait_for_timeout(3000)
     web_btn = page.locator("a.tgme_action_web_button")
-    web_btn.wait_for(state="visible", timeout=10000)
+    page.wait_for_timeout(3000)
+    # web_btn.wait_for(state="visible", timeout=10000) # TODO разобраться с проблемой таймаута и причины несрабатывания
     web_btn.click()
     return check_channel_availability(page)

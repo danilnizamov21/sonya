@@ -6,8 +6,10 @@ from sonya.collectors.telegram.navigation import open_channel
 def collect_messages(channel_url: str) -> str | bool:
     with create_browser() as context:
         page = context.pages[0] if context.pages else context.new_page()
-
-        if open_channel(page, channel_url):
+        check = open_channel(page, channel_url)
+        if check is False:
+            print(f"Канал {channel_url} недоступен")
             return False
         else:
+            print(f"Канал {channel_url} доступен")
             return get_message_container_html(page)

@@ -10,3 +10,16 @@ def save_channels_db(channls: list[str]) -> None:
             if not existing_channel:
                 new_channel = Channel(url=channel_url)
                 session.add(new_channel)
+
+
+def get_channels_for_inspection(session, limit: int = 20):
+    return (
+        session.query(Channel)
+        .filter(Channel.private.is_(False))
+        .order_by(
+            Channel.priority.desc(),
+            Channel.inspection_date.asc().nullsfirst(),
+        )
+        .limit(limit)
+        .all()
+    )

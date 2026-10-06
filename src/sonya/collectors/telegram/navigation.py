@@ -2,25 +2,22 @@ from playwright.sync_api import Page
 
 
 def check_channel_availability(page: Page) -> bool:
-    """функция для проверки канала(является ли он публичным)"""
-    page.wait_for_load_state()
-    page.wait_for_timeout(5000)
-    # button_visible = page.locator("text=Request to Join Channel").is_visible()
-    # error = page.locator("div.modal-title").filter(has_text="Something went wrong")
+    page.wait_for_load_state("domcontentloaded")
 
-    # print("error count:", error.count())
-    # print("error visible:", error.is_visible())
-    # print("URL:", page.url)
+    messages = page.locator("div.message-date-group").last
 
-    # print(
-    #     "Something count:", page.get_by_text("Something went wrong", exact=True).count()
-    # )
+    try:
+        messages.wait_for(state="visible", timeout=10000)
+        return True
 
-    # print("body:")
-    # print(page.locator("body").inner_text())
-    # print("modal-title:", page.locator("div.modal-title").count())
-    message_container = page.locator("div.message-date-group").last.is_visible()
-    return message_container
+    except TimeoutError:
+        print("TIMEOUT")
+        print("URL:", page.url)
+        print("messages:", page.locator("div.message-date-group").count())
+        print("body:")
+        print(page.locator("body").inner_text()[:3000])
+
+        return False
 
 
 def open_channel(page: Page, channel_url: str):

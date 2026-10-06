@@ -23,7 +23,7 @@ def parse_messages(html: str) -> list[Message]:
         for delete in text_block.select(".Reactions, .CommentButton"):
             delete.decompose()
 
-        text = text_block.get_text(strip=True)
+        text = text_block.get_text(strip=True, separator=" ")
         text = text.lower()
         clean_links = list(
             {

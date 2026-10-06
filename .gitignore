@@ -7,6 +7,7 @@ wheels/
 *.egg-info/
 *channels.json
 **.html
+**.json
 # Virtual environments
 .venv/
 

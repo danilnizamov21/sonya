@@ -63,3 +63,11 @@ def collect_tgstat(topic: str):
         save_channels_db(channels)
 
         print("Всего уникальных каналов:", len(channels))
+
+
+def main():
+    inspect_telegram()
+
+
+if __name__ == "__main__":
+    main()

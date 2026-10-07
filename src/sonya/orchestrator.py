@@ -3,8 +3,14 @@ from datetime import datetime
 from functools import wraps
 
 from sonya.collectors.telegram.runner import collect_messages
+from sonya.collectors.telegram.save import save_html
+from sonya.collectors.tg_stat.browser import create_browser
+from sonya.collectors.tg_stat.runner import collect_channels
 from sonya.database.session import get_session
-from sonya.repositories.channels import get_channels_for_inspection
+from sonya.repositories.channels import (
+    get_channels_for_inspection,
+    save_channels_db,  # type: ignore
+)
 
 
 def timer(func):
@@ -21,7 +27,7 @@ def timer(func):
 
 
 @timer
-def main(limit: int = 20, batch_size: int = 10):
+def inspect_telegram(limit: int = 20, batch_size: int = 10):
     with get_session() as session:
         channels = get_channels_for_inspection(session, limit)
 
@@ -32,9 +38,7 @@ def main(limit: int = 20, batch_size: int = 10):
                 try:
                     message_html = collect_messages(channel.url)
                     if isinstance(message_html, str):
-                        filename = f"src/sonya/storage/html/{channel.id}.html"
-                        with open(filename, "w", encoding="utf-8") as f:
-                            f.write(message_html)
+                        save_html(channel.id, message_html)
                         channel.private = False
 
                     else:
@@ -46,5 +50,16 @@ def main(limit: int = 20, batch_size: int = 10):
             session.commit()
 
 
-if __name__ == "__main__":
-    main()
+@timer
+def collect_tgstat(topic: str):
+    with create_browser() as browser:
+        page = browser.new_page()
+
+        page.goto(
+            f"https://tgstat.ru/{topic}",
+            wait_until="domcontentloaded",
+        )
+        channels = collect_channels(page)
+        save_channels_db(channels)
+
+        print("Всего уникальных каналов:", len(channels))

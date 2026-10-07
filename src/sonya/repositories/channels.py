@@ -1,8 +1,10 @@
+from collections.abc import Iterable
+
 from sonya.database.models import Channel
 from sonya.database.session import get_session
 
 
-def save_channels_db(channls: list[str]) -> None:
+def save_channels_db(channls: Iterable[str]) -> None:
 
     with get_session() as session:
         for channel_url in channls:

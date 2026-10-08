@@ -59,7 +59,7 @@ def collect_tgstat(topic: str):
             f"https://tgstat.ru/{topic}",
             wait_until="domcontentloaded",
         )
-        channels = collect_channels(page)
+        channels = collect_channels(page)  # type: ignore
         save_channels_db(channels)
 
         print("Всего уникальных каналов:", len(channels))

@@ -22,7 +22,7 @@ dependencies = [
 ]
 
 [project.scripts]
-sonya = "sonya:main"
+sonya = "sonya.cli:app"
 
 [build-system]
 requires = ["uv_build>=0.12.16,<0.13.0"]

@@ -1,4 +1,5 @@
 from playwright.sync_api import Page
+from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 
 
 def check_channel_availability(page: Page) -> bool:
@@ -10,17 +11,11 @@ def check_channel_availability(page: Page) -> bool:
         messages.wait_for(state="visible", timeout=10000)
         return True
 
-    except TimeoutError:
-        print("TIMEOUT")
-        print("URL:", page.url)
-        print("messages:", page.locator("div.message-date-group").count())
-        print("body:")
-        print(page.locator("body").inner_text()[:3000])
-
+    except PlaywrightTimeoutError:
         return False
 
 
-def open_channel(page: Page, channel_url: str):
+def open_channel(page: Page, channel_url: str) -> bool:
 
     page.goto(channel_url, wait_until="domcontentloaded")
 

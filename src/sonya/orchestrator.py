@@ -1,12 +1,15 @@
 import time
 from datetime import datetime
 from functools import wraps
+from pathlib import Path
 
 from sonya.collectors.telegram.runner import collect_messages
 from sonya.collectors.telegram.save import save_html
 from sonya.collectors.tg_stat.browser import create_browser
 from sonya.collectors.tg_stat.runner import collect_channels
 from sonya.database.session import get_session
+from sonya.parser.pars import parse_messages
+from sonya.parser.save import save_messages
 from sonya.repositories.channels import (
     get_channels_for_inspection,
     save_channels_db,  # type: ignore
@@ -65,9 +68,14 @@ def collect_tgstat(topic: str):
         print("Всего уникальных каналов:", len(channels))
 
 
-def main():
-    inspect_telegram()
+@timer
+def pars_messages() -> None:
+    path_dir = Path("src/sonya/storage/html/")
+    for file_path in path_dir.iterdir():
+        if file_path.is_file() and file_path.suffix == ".html":
+            with open(file_path, "r", encoding="utf-8") as f:
+                html = f.read()
 
-
-if __name__ == "__main__":
-    main()
+            parsed = parse_messages(html)
+            channel_id = int(file_path.stem)
+            save_messages(channel_id=channel_id, message_list=parsed)

@@ -1,6 +1,6 @@
 import typer
 
-from sonya.orchestrator import collect_tgstat, inspect_telegram
+from sonya.orchestrator import collect_tgstat, inspect_telegram, pars_messages
 
 app = typer.Typer(
     name="sonya",
@@ -42,6 +42,12 @@ def telegram(
         limit=limit,
         batch_size=batch_size,
     )
+
+
+@app.command()
+def pars():
+    """Париснг html в Json"""
+    pars_messages()
 
 
 if __name__ == "__main__":

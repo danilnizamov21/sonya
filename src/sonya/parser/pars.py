@@ -33,10 +33,8 @@ def parse_messages(html: str) -> list[Message]:
             }
         )
 
-        if not (clean_links and text):
-            continue
-
-        item = Message(count=i + 1, urls=clean_links, text=text)
-        result.append(item)
+        if clean_links:
+            item = Message(count=i + 1, urls=clean_links, text=text)
+            result.append(item)
 
     return result

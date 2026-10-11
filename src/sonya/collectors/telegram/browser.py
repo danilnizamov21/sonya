@@ -10,7 +10,7 @@ def create_browser():
     with sync_playwright() as p:
         context = p.chromium.launch_persistent_context(
             user_data_dir="./telegram_profile",
-            headless=True,
+            headless=False,
             channel="chrome",
             args=[
                 "--disable-blink-features=AutomationControlled",

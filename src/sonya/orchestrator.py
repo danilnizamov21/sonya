@@ -9,11 +9,11 @@ from sonya.collectors.tg_stat.browser import create_browser
 from sonya.collectors.tg_stat.runner import collect_channels
 from sonya.database.session import get_session
 from sonya.parser.pars import parse_messages
-from sonya.parser.save import save_messages
 from sonya.repositories.channels import (
     get_channels_for_inspection,
     save_channels_db,  # type: ignore
 )
+from sonya.repositories.links import save_messages_bd
 
 
 def timer(func):
@@ -62,7 +62,7 @@ def collect_tgstat(topic: str):
             f"https://tgstat.ru/{topic}",
             wait_until="domcontentloaded",
         )
-        channels = collect_channels(page)  # type: ignore
+        channels = collect_channels(page, 5)
         save_channels_db(channels)
 
         print("Всего уникальных каналов:", len(channels))
@@ -77,5 +77,7 @@ def pars_messages() -> None:
                 html = f.read()
 
             parsed = parse_messages(html)
-            channel_id = int(file_path.stem)
-            save_messages(channel_id=channel_id, message_list=parsed)
+
+            if parsed:
+                channel_id = int(file_path.stem)
+                save_messages_bd(channel_id=channel_id, message_list=parsed)

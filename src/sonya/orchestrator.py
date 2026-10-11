@@ -11,7 +11,7 @@ from sonya.database.session import get_session
 from sonya.parser.pars import parse_messages
 from sonya.repositories.channels import (
     get_channels_for_inspection,
-    save_channels_db,  # type: ignore
+    save_channels_db,
 )
 from sonya.repositories.links import save_messages_bd
 

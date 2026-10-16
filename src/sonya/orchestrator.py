@@ -5,6 +5,7 @@ from pathlib import Path
 
 from sonya.collectors.telegram.runner import collect_messages
 from sonya.collectors.telegram.save import save_html
+from sonya.collectors.telegram.status import Status
 from sonya.collectors.tg_stat.browser import create_browser
 from sonya.collectors.tg_stat.runner import collect_channels
 from sonya.database.session import get_session
@@ -39,16 +40,20 @@ def inspect_telegram(limit: int = 20, batch_size: int = 10):
 
             for channel in batch:
                 try:
-                    message_html = collect_messages(channel.url)
-                    if isinstance(message_html, str):
-                        save_html(channel.id, message_html)
-                        channel.private = False
-
+                    result = collect_messages(channel.url)
+                    if isinstance(result, str):
+                        save_html(channel.id, result)
+                        channel.status = Status.ACCESSIBLE.value
+                    elif result == Status.PRIVATE.value:
+                        channel.status = Status.PRIVATE.value
+                    elif result == Status.TIMEOUT:
+                        channel.status = Status.TIMEOUT.value
                     else:
-                        channel.private = True
+                        channel.status = Status.ERROR.value
                     channel.inspection_date = datetime.now()
                 except Exception as e:
                     print(f"Ошибка {channel.url}: {e}")
+                    channel.status = Status.ERROR.value
 
             session.commit()
 

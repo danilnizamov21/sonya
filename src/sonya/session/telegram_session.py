@@ -16,6 +16,7 @@ def create_session_for_telegram(password: str):
             page.wait_for_selector(PWD_SELECTOR, timeout=120000)
 
             page.fill(selector=PWD_SELECTOR, value=password)
+            page.pause()
             page.press(selector=PWD_SELECTOR, key="Enter")
             page.wait_for_selector(".chat-list")
             print("Сессия успешно создана")

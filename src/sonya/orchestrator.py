@@ -41,19 +41,21 @@ def inspect_telegram(limit: int = 20, batch_size: int = 10):
             for channel in batch:
                 try:
                     result = collect_messages(channel.url)
-                    if isinstance(result, str):
+
+                    if isinstance(result, Status):
+                        channel.status = result.value
+                    elif isinstance(result, str):
                         save_html(channel.id, result)
                         channel.status = Status.ACCESSIBLE.value
-                    elif result == Status.PRIVATE.value:
-                        channel.status = Status.PRIVATE.value
-                    elif result == Status.TIMEOUT:
-                        channel.status = Status.TIMEOUT.value
                     else:
                         channel.status = Status.ERROR.value
-                    channel.inspection_date = datetime.now()
+
                 except Exception as e:
                     print(f"Ошибка {channel.url}: {e}")
                     channel.status = Status.ERROR.value
+
+                finally:
+                    channel.inspection_date = datetime.now()
 
             session.commit()
 

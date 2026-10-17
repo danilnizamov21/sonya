@@ -7,10 +7,12 @@ from sonya.collectors.telegram.status import Status
 def check_channel_availability(page: Page) -> Status:
     try:
         page.wait_for_load_state("domcontentloaded")
+        page.wait_for_timeout(3000)
 
-        billet = page.locator("text=Request to Join Channel")
+        private = page.get_by_text("Something went wrong", exact=True)
+        billet = page.get_by_role("button", name="Request to Join Channel")
 
-        if billet.is_visible():
+        if private.is_visible() or billet.is_visible():
             return Status.PRIVATE
 
         messages = page.locator("div.message-date-group").last
@@ -26,10 +28,11 @@ def check_channel_availability(page: Page) -> Status:
 
 
 def open_channel(page: Page, channel_url: str) -> Status:
-
     page.goto(channel_url, wait_until="domcontentloaded")
 
     web_btn = page.locator("a.tgme_action_web_button")
-
     web_btn.click()
+
+    page.wait_for_timeout(3000)
+
     return check_channel_availability(page)

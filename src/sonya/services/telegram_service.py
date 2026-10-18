@@ -5,6 +5,7 @@ from sonya.collectors.telegram.save import save_html
 from sonya.collectors.telegram.status import Status
 from sonya.database.session import get_session
 from sonya.repositories.channels import get_channels_for_inspection
+from sonya.session.telegram_session import create_session_for_telegram
 
 
 def inspect_telegram(limit: int = 20, batch_size: int = 10):
@@ -34,3 +35,7 @@ def inspect_telegram(limit: int = 20, batch_size: int = 10):
                     channel.inspection_date = datetime.now()
 
             session.commit()
+
+
+def login_telegram(password):
+    create_session_for_telegram(password)

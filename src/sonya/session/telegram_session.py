@@ -23,11 +23,3 @@ def create_session_for_telegram(password: str):
         except Exception as e:
             print(f"Ошибка во время авторизации {e}")
             raise
-
-
-def main():
-    create_session_for_telegram("1234")
-
-
-if __name__ == "__main__":
-    main()

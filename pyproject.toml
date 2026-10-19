@@ -20,6 +20,7 @@ dependencies = [
     "pymorphy3>=2.0.6",
     "typer[all]>=0.27.3",
     "fastapi[standard]>=0.146.0",
+    "python-multipart>=0.0.32",
 ]
 
 [project.scripts]

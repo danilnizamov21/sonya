@@ -13,6 +13,7 @@ def collect(topic: TopicRequest, background_tasks: BackgroundTasks):
     return {"status": "accepted"}
 
 
+@router.post("/login")
 def login(background_tasks: BackgroundTasks):
     """Создание сессии для TGstat"""
     background_tasks.add_task(login_tgstat)

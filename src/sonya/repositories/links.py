@@ -5,7 +5,7 @@ from sonya.database.session import get_session
 from sonya.parser.pars import Message
 
 
-def save_messages_bd(channel_id: int, message_list: list[Message]) -> None:
+def save_links(channel_id: int, message_list: list[Message]) -> None:
     urls = {url for message in message_list for url in message.urls}
     with get_session() as session:
         for url in urls:

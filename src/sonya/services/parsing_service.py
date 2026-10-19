@@ -1,7 +1,8 @@
+import os
 from pathlib import Path
 
 from sonya.parser.pars import parse_messages
-from sonya.repositories.links import save_messages_bd
+from sonya.repositories.links import save_links
 
 
 def pars_messages() -> None:
@@ -15,4 +16,13 @@ def pars_messages() -> None:
 
             if parsed:
                 channel_id = int(file_path.stem)
-                save_messages_bd(channel_id=channel_id, message_list=parsed)
+                save_links(channel_id=channel_id, message_list=parsed)
+    clear_storage()
+
+
+def clear_storage() -> None:
+    dir_path = "src/sonya/storage/html/"
+    for filename in os.listdir(dir_path):
+        full_path = os.path.join(dir_path, filename)
+        if os.path.isfile(full_path):
+            os.remove(full_path)

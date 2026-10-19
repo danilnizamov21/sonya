@@ -3,6 +3,7 @@ from sonya.collectors.tg_stat.runner import collect_channels
 from sonya.repositories.channels import (
     save_channels_db,
 )
+from sonya.session.tgstat.tgstat_session import create_sesison_for_tgstat
 
 
 def collect_tgstat(topic: str):
@@ -17,3 +18,7 @@ def collect_tgstat(topic: str):
         save_channels_db(channels)
 
         print("Всего уникальных каналов:", len(channels))
+
+
+def login_tgstat():
+    create_sesison_for_tgstat()

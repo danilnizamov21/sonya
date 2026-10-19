@@ -13,6 +13,8 @@ def save_channels_db(channls: Iterable[str]) -> None:
             if not existing_channel:
                 new_channel = Channel(url=channel_url)
                 session.add(new_channel)
+            else:
+                print("NOT UNIQUE")
 
 
 def get_channels_for_inspection(session, limit: int = 20):

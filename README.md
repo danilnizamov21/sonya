@@ -96,6 +96,6 @@ uv run sonya pars
 ## Примечания
 
 - Команды `tgstat` и `telegram` требуют доступную базу PostgreSQL с созданными таблицами.
-- Проверка каналов запускает установленный Google Chrome и сохраняет его профиль в `telegram_profile/`.
-- Сбор данных с TGStat использует профиль Camoufox в `camoufox_profile/`.
+- Проверка каналов запускает установленный Google Chrome и сохраняет его профиль в `src/sonya/collectors/telegram/telegram_profile/`.
+- Сбор данных с TGStat использует профиль Camoufox в `src/sonya/collectors/tg_stat/camoufox_profile/`.
 - Сейчас получение следующих страниц TGStat настроено на путь `/gambling`; пагинация для других разделов может потребовать дополнительной настройки.

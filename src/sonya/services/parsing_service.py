@@ -1,4 +1,5 @@
 import os
+import shutil
 from pathlib import Path
 
 from sonya.parser.pars import parse_messages
@@ -17,12 +18,21 @@ def pars_messages() -> None:
             if parsed:
                 channel_id = int(file_path.stem)
                 save_links(channel_id=channel_id, message_list=parsed)
-    clear_storage()
+    clear_storage("src/sonya/storage/html/")
 
 
-def clear_storage() -> None:
-    dir_path = "src/sonya/storage/html/"
+def clear_storage(dir_path: str) -> None:
+
+    if not os.path.exists(dir_path):
+        print(f"Директория {dir_path} не существует.")
+        return
+
     for filename in os.listdir(dir_path):
         full_path = os.path.join(dir_path, filename)
-        if os.path.isfile(full_path):
-            os.remove(full_path)
+        try:
+            if os.path.isfile(full_path) or os.path.islink(full_path):
+                os.remove(full_path)
+            elif os.path.isdir(full_path):
+                shutil.rmtree(full_path)
+        except Exception as e:
+            print(f"Не удалось удалить {full_path}: {e}")

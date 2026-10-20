@@ -14,3 +14,5 @@ wheels/
 # Camoufox profile
 camoufox_profile/
 telegram_profile/
+src/sonya/collectors/tg_stat/camoufox_profile/
+src/sonya/collectors/telegram/telegram_profile/

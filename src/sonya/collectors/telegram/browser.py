@@ -1,4 +1,5 @@
 from contextlib import contextmanager
+from pathlib import Path
 
 from playwright.sync_api import sync_playwright
 from playwright_stealth import Stealth
@@ -9,7 +10,7 @@ def create_browser():
     stealth = Stealth()
     with sync_playwright() as p:
         context = p.chromium.launch_persistent_context(
-            user_data_dir="./telegram_profile",
+            user_data_dir=str(Path(__file__).resolve().parent / "telegram_profile"),
             headless=False,
             channel="chrome",
             args=[

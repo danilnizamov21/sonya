@@ -7,7 +7,7 @@ from sonya.collectors.telegram.status import Status
 def check_channel_availability(page: Page) -> Status:
     try:
         page.wait_for_load_state("domcontentloaded")
-        page.wait_for_timeout(3000)
+        page.wait_for_timeout(1000)
 
         private = page.get_by_text("Something went wrong", exact=True)
         billet = page.get_by_role("button", name="Request to Join Channel")
@@ -29,10 +29,11 @@ def check_channel_availability(page: Page) -> Status:
 
 def open_channel(page: Page, channel_url: str) -> Status:
     page.goto(channel_url, wait_until="domcontentloaded")
+    page.wait_for_timeout(500)
+    page.get_by_text("Open in Web").click()
 
-    web_btn = page.locator("a.tgme_action_web_button")
-    web_btn.click()
+    # web_btn = page.locator("a.tgme_action_web_button")
 
-    page.wait_for_timeout(3000)
+    # web_btn.click()
 
     return check_channel_availability(page)

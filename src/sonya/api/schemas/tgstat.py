@@ -1,6 +1,6 @@
 from typing import Literal
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 # Категории которые доступны с сайта тгстат
 TopicType = Literal[
@@ -56,3 +56,4 @@ TopicType = Literal[
 
 class TopicRequest(BaseModel):
     topic: TopicType
+    pages: int = Field(default=5, gt=0, le=100)

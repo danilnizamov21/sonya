@@ -2,7 +2,7 @@ from sonya.collectors.tg_stat.pagination import get_next_page
 from sonya.collectors.tg_stat.parse import parse_channels
 
 
-def collect_channels(page, count):
+def collect_channels(page, topic: str, count: int):
     all_channels = set()
 
     # первая страница
@@ -10,7 +10,7 @@ def collect_channels(page, count):
     all_channels.update(channels)
     # остальные страницы
     for page_number in range(2, count + 1):
-        response = get_next_page(page)
+        response = get_next_page(page, topic)
 
         if response.status != 200:
             print("Ошибка:", response.text()[:1000])

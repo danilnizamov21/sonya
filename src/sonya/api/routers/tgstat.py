@@ -10,7 +10,11 @@ router = APIRouter()
 @router.post("/collect")
 def collect(topic: TopicRequest, background_tasks: BackgroundTasks):
     """Сбор ссылок на тг каналы и сохранение в бд"""
-    background_tasks.add_task(collect_tgstat, topic=topic.topic)
+    background_tasks.add_task(
+        collect_tgstat,
+        topic=topic.topic,
+        pages=topic.pages,
+    )
     return {"status": "accepted"}
 
 

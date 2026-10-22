@@ -17,9 +17,16 @@ def tgstat(
         ...,
         help="Раздел TGStat, например gambling.",
     ),
+    pages: int = typer.Option(
+        5,
+        "--pages",
+        "-p",
+        min=1,
+        help="Сколько страниц собрать, включая первую.",
+    ),
 ):
     """Собрать Telegram-каналы из TGStat."""
-    collect_tgstat(topic)
+    collect_tgstat(topic, pages)
 
 
 @app.command()

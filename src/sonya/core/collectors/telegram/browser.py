@@ -6,11 +6,21 @@ from dotenv import load_dotenv
 from playwright.sync_api import sync_playwright
 from playwright_stealth import Stealth
 
-load_dotenv()
+load_dotenv(Path(__file__).resolve().parent / ".env")
+
+TG_PROXY_SERVER = os.getenv("TG_PROXY_SERVER")
+TG_PROXY_USERNAME = os.getenv("TG_PROXY_USERNAME")
+TG_PROXY_PWD = os.getenv("TG_PROXY_PWD")
+
+if not all((TG_PROXY_SERVER, TG_PROXY_USERNAME, TG_PROXY_PWD)):
+    raise RuntimeError(
+        "TG_PROXY_SERVER, TG_PROXY_USERNAME, TG_PROXY_PWD must be set in .env"
+    )
+
 proxy_config = {
-    "server": os.getenv("TG_PROXY_SERVER"),
-    "username": os.getenv("TG_PROXY_USERNAME"),
-    "password": os.getenv("TG_PROXY_PWD"),
+    "server": TG_PROXY_SERVER,
+    "username": TG_PROXY_USERNAME,
+    "password": TG_PROXY_PWD,
 }
 
 

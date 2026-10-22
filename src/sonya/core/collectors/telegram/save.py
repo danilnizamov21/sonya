@@ -1,4 +1,7 @@
+from pathlib import Path
+
+
 def save_html(id: int, message: str) -> None:
-    filename = f"src/sonya/storage/html/{id}.html"
-    with open(filename, "w", encoding="utf-8") as f:
-        f.write(message)
+    path = Path("src/sonya/storage/html") / f"{id}.html"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(message, encoding="utf-8")

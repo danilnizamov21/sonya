@@ -1,9 +1,9 @@
-from sonya.collectors.tg_stat.browser import create_browser
-from sonya.collectors.tg_stat.runner import collect_channels
-from sonya.repositories.channels import (
+from sonya.core.collectors.tg_stat.browser import create_browser
+from sonya.core.collectors.tg_stat.runner import collect_channels
+from sonya.core.repositories.channels import (
     save_channels_db,
 )
-from sonya.session.tgstat.tgstat_session import create_sesison_for_tgstat
+from sonya.core.session.tgstat.tgstat_session import create_sesison_for_tgstat
 
 
 def collect_tgstat(topic: str, pages: int = 5):

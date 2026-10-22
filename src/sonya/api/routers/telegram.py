@@ -4,9 +4,9 @@ from fastapi import APIRouter, BackgroundTasks, HTTPException
 from fastapi.responses import FileResponse
 
 from sonya.api.schemas.telegram import InspectChannelsRequest, LoginTelegramRequest
-from sonya.services.orchestrator import orchestrator_tg
-from sonya.services.parsing_service import clear_storage
-from sonya.services.telegram_service import login_telegram
+from sonya.core.services.orchestrator import orchestrator_tg
+from sonya.core.services.parsing_service import clear_storage
+from sonya.core.services.telegram_service import login_telegram
 
 router = APIRouter()
 QR_PATH = Path("src/sonya/session/qr_for_login.png")

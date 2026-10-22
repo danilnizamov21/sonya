@@ -1,8 +1,8 @@
-from sonya.collectors.tg_stat.pagination import get_next_page
-from sonya.collectors.tg_stat.parse import parse_channels
+from sonya.core.collectors.tg_stat.pagination import get_next_page
+from sonya.core.collectors.tg_stat.parse import parse_channels
 
 
-def collect_channels(page, topic: str, count: int):
+def collect_channels(page, count: int, topic: str):
     all_channels = set()
 
     # первая страница

@@ -1,8 +1,8 @@
 from sqlalchemy import select
 
-from sonya.database.models import ChannelLink, Link
-from sonya.database.session import get_session
-from sonya.parser.pars import Message
+from sonya.core.database.models import ChannelLink, Link
+from sonya.core.database.session import get_session
+from sonya.core.parser.pars import Message
 
 
 def save_links(channel_id: int, message_list: list[Message]) -> None:

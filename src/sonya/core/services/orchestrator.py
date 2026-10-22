@@ -1,6 +1,6 @@
-from sonya.services.parsing_service import pars_messages
-from sonya.services.telegram_service import inspect_telegram
-from sonya.utils.decorators import timer
+from sonya.core.services.parsing_service import pars_messages
+from sonya.core.services.telegram_service import inspect_telegram
+from sonya.core.utils.decorators import timer
 
 
 @timer

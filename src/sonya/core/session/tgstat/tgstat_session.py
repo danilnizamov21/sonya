@@ -1,7 +1,7 @@
 from concurrent.futures import ThreadPoolExecutor
 
-from sonya.collectors.tg_stat.browser import create_browser
-from sonya.session.tgstat.confirm import login_with_tg
+from sonya.core.collectors.tg_stat.browser import create_browser
+from sonya.core.session.tgstat.confirm import login_with_tg
 
 url = None
 

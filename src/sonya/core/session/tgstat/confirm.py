@@ -1,4 +1,4 @@
-from sonya.collectors.telegram.browser import create_browser
+from sonya.core.collectors.telegram.browser import create_browser
 
 
 def login_with_tg(url: str):

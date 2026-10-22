@@ -1,8 +1,8 @@
 from collections.abc import Iterable
 
-from sonya.collectors.telegram.status import Status
-from sonya.database.models import Channel
-from sonya.database.session import get_session
+from sonya.core.collectors.telegram.status import Status
+from sonya.core.database.models import Channel
+from sonya.core.database.session import get_session
 
 
 def save_channels_db(channls: Iterable[str]) -> None:

@@ -1,4 +1,4 @@
-from sonya.collectors.telegram.browser import create_browser
+from sonya.core.collectors.telegram.browser import create_browser
 
 QR_SELECTOR = "svg > rect"
 PWD_SELECTOR = "#sign-in-password"

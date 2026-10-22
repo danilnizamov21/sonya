@@ -1,8 +1,8 @@
 import typer
 
-from sonya.services.parsing_service import pars_messages
-from sonya.services.telegram_service import inspect_telegram
-from sonya.services.tgstat_service import collect_tgstat
+from sonya.core.services.parsing_service import pars_messages
+from sonya.core.services.telegram_service import inspect_telegram
+from sonya.core.services.tgstat_service import collect_tgstat
 
 app = typer.Typer(
     name="sonya",

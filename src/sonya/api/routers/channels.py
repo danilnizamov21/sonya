@@ -1,6 +1,6 @@
 from fastapi import APIRouter, File, UploadFile
 
-from sonya.services.upload import upload
+from sonya.core.services.upload import upload
 
 router = APIRouter()
 

@@ -1,8 +1,8 @@
 from fastapi import APIRouter, BackgroundTasks
 
 from sonya.api.schemas.tgstat import TopicRequest
-from sonya.services.parsing_service import clear_storage
-from sonya.services.tgstat_service import collect_tgstat, login_tgstat
+from sonya.core.services.parsing_service import clear_storage
+from sonya.core.services.tgstat_service import collect_tgstat, login_tgstat
 
 router = APIRouter()
 

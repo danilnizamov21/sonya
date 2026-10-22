@@ -3,7 +3,7 @@ from datetime import datetime
 from sqlalchemy import DateTime, ForeignKey, String
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
-from sonya.collectors.telegram.status import Status
+from sonya.core.collectors.telegram.status import Status
 
 
 class Base(DeclarativeBase):

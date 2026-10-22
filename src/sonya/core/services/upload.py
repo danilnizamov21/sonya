@@ -1,7 +1,7 @@
 import re
 from collections.abc import Iterable
 
-from sonya.repositories.channels import save_channels_db
+from sonya.core.repositories.channels import save_channels_db
 
 
 def normalize_channel(link: str) -> str:

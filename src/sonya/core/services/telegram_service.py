@@ -1,12 +1,12 @@
 from datetime import datetime
 
-from sonya.collectors.telegram.browser import create_browser
-from sonya.collectors.telegram.runner import collect_messages
-from sonya.collectors.telegram.save import save_html
-from sonya.collectors.telegram.status import Status
-from sonya.database.session import get_session
-from sonya.repositories.channels import get_channels_for_inspection
-from sonya.session.telegram_session import create_session_for_telegram
+from sonya.core.collectors.telegram.browser import create_browser
+from sonya.core.collectors.telegram.runner import collect_messages
+from sonya.core.collectors.telegram.save import save_html
+from sonya.core.collectors.telegram.status import Status
+from sonya.core.database.session import get_session
+from sonya.core.repositories.channels import get_channels_for_inspection
+from sonya.core.session.telegram_session import create_session_for_telegram
 
 
 def inspect_telegram(limit: int = 20, batch_size: int = 10) -> None:

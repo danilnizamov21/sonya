@@ -2,8 +2,8 @@ import os
 import shutil
 from pathlib import Path
 
-from sonya.parser.pars import parse_messages
-from sonya.repositories.links import save_links
+from sonya.core.parser.pars import parse_messages
+from sonya.core.repositories.links import save_links
 
 
 def pars_messages() -> None:

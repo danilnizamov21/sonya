@@ -18,23 +18,20 @@ def save_channels_db(urls: Iterable[str]) -> None:
             session.add(Channel(url=channel_url))
 
 
-def get_channels_for_inspection(session, limit: int = 20):
-    return (
-        session.query(Channel)
-        .filter(
-            Channel.status.in_(
-                [
-                    Status.PENDING.value,
-                    Status.ACCESSIBLE.value,
-                    Status.TIMEOUT.value,
-                    Status.ERROR.value,
-                ]
-            )
-        )
-        .order_by(
-            Channel.priority.desc(),
-            Channel.inspection_date.asc().nullsfirst(),
-        )
-        .limit(limit)
-        .all()
+def get_channels_for_inspection(
+    session,
+    status: Status | None = None,
+    limit: int | None = 20,
+):
+    query = session.query(Channel)
+
+    if status is not None:
+        query = query.filter(Channel.status == status.value)
+
+    query = query.order_by(
+        Channel.priority.desc(),
+        Channel.inspection_date.asc().nullsfirst(),
     )
+    if limit is not None:
+        query = query.limit(limit)
+    return query.all()

@@ -9,9 +9,13 @@ from sonya.core.repositories.channels import get_channels_for_inspection
 from sonya.core.session.telegram_session import create_session_for_telegram
 
 
-def inspect_telegram(limit: int = 20, batch_size: int = 10) -> None:
+def inspect_telegram(
+    status: Status | None,
+    limit: int | None = 20,
+    batch_size: int = 10,
+) -> None:
     with get_session() as session:
-        channels = get_channels_for_inspection(session, limit)
+        channels = get_channels_for_inspection(session, status, limit)
         if not channels:
             return
 

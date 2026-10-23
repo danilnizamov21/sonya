@@ -15,7 +15,9 @@ QR_PATH = Path("src/sonya/session/qr_for_login.png")
 @router.post("/inspect")
 def inspect(payload: InspectChannelsRequest, background_tasks: BackgroundTasks):
     """Сбор HTML с телеграм каналов, парсинг HTML, созранение ссылок в бд"""
-    background_tasks.add_task(orchestrator_tg, payload.limit, payload.batch_size)
+    background_tasks.add_task(
+        orchestrator_tg, payload.status, payload.limit, payload.batch_size
+    )
 
     return {"Status": "OK"}
 

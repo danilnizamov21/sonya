@@ -1,8 +1,8 @@
 from playwright.sync_api import Page
 
-from sonya.collectors.telegram.links import get_message_container_html
-from sonya.collectors.telegram.navigation import open_channel
-from sonya.collectors.telegram.status import Status
+from sonya.core.collectors.telegram.links import get_message_container_html
+from sonya.core.collectors.telegram.navigation import open_channel
+from sonya.core.collectors.telegram.status import Status
 
 
 def collect_messages(page: Page, channel_url: str) -> str | Status:

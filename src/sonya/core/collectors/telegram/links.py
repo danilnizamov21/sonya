@@ -1,7 +1,7 @@
 from playwright.sync_api import Page
 from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 
-from sonya.collectors.telegram.status import Status
+from sonya.core.collectors.telegram.status import Status
 
 
 def get_message_container_html(page: Page) -> str | Status:

@@ -1,9 +1,12 @@
 from pydantic import BaseModel, Field
 
+from sonya.core.collectors.telegram.status import Status
+
 
 class InspectChannelsRequest(BaseModel):
-    limit: int = Field(gt=0, le=20, description="количество обрабатываемых каналов")
+    limit: int | None
     batch_size: int = Field(gt=0, le=20)
+    status: Status | None
 
 
 class LoginTelegramRequest(BaseModel):

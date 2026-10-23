@@ -25,7 +25,7 @@ def upload(raw_channels: Iterable[str]):
             duplicates.append(channel)
             continue
         seen.add(key)
-        channels.append(channel)
+        channels.append(key)
 
     for channel in channels:
         print(channel)

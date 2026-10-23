@@ -12,18 +12,24 @@ def pars_messages() -> None:
         print(f"Директория {path_dir} не существует.")
         return
 
-    for file_path in path_dir.iterdir():
+    empty_dir = path_dir / "empty"
+
+    for file_path in list(path_dir.iterdir()):
         if not (file_path.is_file() and file_path.suffix == ".html"):
             continue
 
         try:
-            with open(file_path, "r", encoding="utf-8") as f:
-                html = f.read()
+            html = file_path.read_text(encoding="utf-8")
 
             parsed = parse_messages(html)
-            if parsed:
-                channel_id = int(file_path.stem)
-                save_links(channel_id=channel_id, message_list=parsed)
+            if not parsed:
+                empty_dir.mkdir(exist_ok=True)
+                shutil.move(str(file_path), empty_dir / file_path.name)
+                print(f"{file_path.name}: ссылок нет, файл перенесён в {empty_dir}")
+                continue
+
+            channel_id = int(file_path.stem)
+            save_links(channel_id=channel_id, message_list=parsed)
 
             file_path.unlink()
         except Exception as e:

@@ -3,18 +3,19 @@ from collections.abc import Iterable
 from sonya.core.collectors.telegram.status import Status
 from sonya.core.database.models import Channel
 from sonya.core.database.session import get_session
+from sonya.core.utils.channel_url import normalize_channel_url
 
 
-def save_channels_db(channls: Iterable[str]) -> None:
-
+def save_channels_db(urls: Iterable[str]) -> None:
     with get_session() as session:
-        for channel_url in channls:
-            existing_channel = session.query(Channel).filter_by(url=channel_url).first()
-            if not existing_channel:
-                new_channel = Channel(url=channel_url)
-                session.add(new_channel)
-            else:
+        for raw in urls:
+            channel_url = normalize_channel_url(raw)
+            if channel_url is None:
+                continue
+            if session.query(Channel).filter_by(url=channel_url).first():
                 print("NOT UNIQUE")
+                continue
+            session.add(Channel(url=channel_url))
 
 
 def get_channels_for_inspection(session, limit: int = 20):

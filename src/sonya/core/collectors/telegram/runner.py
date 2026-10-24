@@ -5,21 +5,27 @@ from sonya.core.collectors.telegram.navigation import open_channel
 from sonya.core.collectors.telegram.status import Status
 
 
-def collect_messages(page: Page, channel_url: str) -> str | Status:
-    check = open_channel(page, channel_url)
-
-    if check != Status.ACCESSIBLE:
-        print(f"Канал {channel_url} недоступен: {check}")
-        return check
-
-    print(f"Канал {channel_url} доступен")
-
-    result = get_message_container_html(page)
-
-    if isinstance(result, Status):
+def collect_messages(
+    status: Status | None, page: Page, channel_url: str
+) -> str | Status:
+    if status == Status.ACCESSIBLE:
+        result = get_message_container_html(page)
         return result
+    else:
+        check = open_channel(page, channel_url)
 
-    if isinstance(result, str):
-        return result
+        if check != Status.ACCESSIBLE:
+            print(f"Канал {channel_url} недоступен: {check}")
+            return check
 
-    return Status.ERROR
+        print(f"Канал {channel_url} доступен")
+
+        result = get_message_container_html(page)
+
+        if isinstance(result, Status):
+            return result
+
+        if isinstance(result, str):
+            return result
+
+        return Status.ERROR

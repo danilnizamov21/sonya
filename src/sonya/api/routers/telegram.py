@@ -3,6 +3,7 @@ from pathlib import Path
 from fastapi import APIRouter, BackgroundTasks, HTTPException
 from fastapi.responses import FileResponse
 
+from sonya.api.core.job_guard import JobGuard
 from sonya.api.schemas.telegram import InspectChannelsRequest, LoginTelegramRequest
 from sonya.core.services.orchestrator import orchestrator_tg
 from sonya.core.services.parsing_service import clear_storage
@@ -11,15 +12,26 @@ from sonya.core.services.telegram_service import login_telegram
 router = APIRouter()
 QR_PATH = Path("src/sonya/session/qr_for_login.png")
 
+inspect_guard = JobGuard("Инспекция каналов")
+
+
+@inspect_guard.releases
+def _run_inspect(status, limit, batch_size):
+    orchestrator_tg(status, limit, batch_size)
+
 
 @router.post("/inspect")
-def inspect(payload: InspectChannelsRequest, background_tasks: BackgroundTasks):
-    """Сбор HTML с телеграм каналов, парсинг HTML, созранение ссылок в бд"""
+def start_inspect(payload: InspectChannelsRequest, background_tasks: BackgroundTasks):
+    inspect_guard.acquire_or_409()
     background_tasks.add_task(
-        orchestrator_tg, payload.status, payload.limit, payload.batch_size
+        _run_inspect, payload.status, payload.limit, payload.batch_size
     )
+    return {"status": "started"}
 
-    return {"Status": "OK"}
+
+@router.get("/inspect/status")
+def inspect_status():
+    return {"running": inspect_guard.running}
 
 
 @router.post("/login")

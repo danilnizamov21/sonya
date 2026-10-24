@@ -27,7 +27,7 @@ def inspect_telegram(
 
                 for channel in batch:
                     try:
-                        result = collect_messages(page, channel.url)
+                        result = collect_messages(status, page, channel.url)
 
                         if isinstance(result, Status):
                             channel.status = result.value

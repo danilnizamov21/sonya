@@ -1,9 +1,12 @@
+import logging
 import re
 
 from playwright.sync_api import Page
 from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 
 from sonya.core.collectors.telegram.status import Status
+
+logger = logging.getLogger(__name__)
 
 LOAD_TIMEOUT_MS = 40_000
 
@@ -31,6 +34,7 @@ def check_channel_availability(page: Page) -> Status:
     except PlaywrightTimeoutError:
         return Status.TIMEOUT
     except Exception:
+        logger.exception("Failed to check Telegram channel availability")
         return Status.ERROR
 
 

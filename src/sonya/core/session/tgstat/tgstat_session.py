@@ -1,14 +1,17 @@
+import logging
 from concurrent.futures import ThreadPoolExecutor
 
 from sonya.core.collectors.tg_stat.browser import create_browser
 from sonya.core.session.tgstat.confirm import login_with_tg
+
+logger = logging.getLogger(__name__)
 
 url = None
 
 
 def new_page(page):
     global url
-    print("Передаем ссылку в отдельный поток")
+    logger.info("Starting TGStat Telegram authorization in a worker thread")
     with ThreadPoolExecutor(max_workers=1) as exec:
         exec.submit(login_with_tg, page.url)
 

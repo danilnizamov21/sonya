@@ -1,5 +1,8 @@
+import logging
 import time
 from functools import wraps
+
+logger = logging.getLogger(__name__)
 
 
 def timer(func):
@@ -9,7 +12,7 @@ def timer(func):
         result = func(*args, **kwargs)
         end_time = time.perf_counter()
         excecution_time = end_time - start_time
-        print(f"Функция {func.__name__}, выполнялась: {excecution_time}")
+        logger.info("Function %s completed in %.2f seconds", func.__name__, excecution_time)
         return result
 
     return wrapper

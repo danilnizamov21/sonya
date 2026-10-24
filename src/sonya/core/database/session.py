@@ -1,9 +1,12 @@
+import logging
 import os
 from contextlib import contextmanager
 
 from dotenv import find_dotenv, load_dotenv
-from sqlalchemy import URL, create_engine
+from sqlalchemy import URL, create_engine, event
 from sqlalchemy.orm import sessionmaker
+
+logger = logging.getLogger(__name__)
 
 load_dotenv(find_dotenv())
 
@@ -29,6 +32,12 @@ engine = create_engine(DATABASE_URL, pool_pre_ping=True)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
+@event.listens_for(engine, "connect")
+def _log_database_connection(*args: object) -> None:
+    del args
+    logger.info("Database connection established")
+
+
 @contextmanager
 def get_session():
     db = SessionLocal()
@@ -36,6 +45,7 @@ def get_session():
         yield db
         db.commit()
     except Exception:
+        logger.exception("Database transaction failed")
         db.rollback()
         raise
     finally:

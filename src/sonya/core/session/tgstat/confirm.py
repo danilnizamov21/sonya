@@ -1,10 +1,14 @@
+import logging
+
 from sonya.core.collectors.telegram.browser import create_browser
+
+logger = logging.getLogger(__name__)
 
 
 def login_with_tg(url: str):
     """создание сесси ТГ"""
     with create_browser() as context:
-        print("создаем сессию", flush=True)
+        logger.info("Starting Telegram authorization for TGStat")
         try:
             page = context.pages[0] if context.pages else context.new_page()
 
@@ -21,5 +25,6 @@ def login_with_tg(url: str):
             auth_btn.click()
             page.wait_for_timeout(5000)
 
-        except Exception as e:
-            print(f"ОШИБКА: {e}", flush=True)
+        except Exception:
+            logger.exception("Telegram authorization for TGStat failed")
+            raise

@@ -1,4 +1,8 @@
+import logging
+
 from sonya.core.collectors.telegram.browser import create_browser
+
+logger = logging.getLogger(__name__)
 
 QR_SELECTOR = "svg > rect"
 PWD_SELECTOR = "#sign-in-password"
@@ -20,7 +24,7 @@ def create_session_for_telegram(password: str):
 
             page.press(selector=PWD_SELECTOR, key="Enter")
             page.wait_for_selector(".chat-list")
-            print("Сессия успешно создана")
-        except Exception as e:
-            print(f"Ошибка во время авторизации {e}")
+            logger.info("Telegram session created successfully")
+        except Exception:
+            logger.exception("Telegram authorization failed")
             raise

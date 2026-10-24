@@ -1,8 +1,12 @@
+import logging
+
 from playwright.sync_api import Page
 
 from sonya.core.collectors.telegram.links import get_message_container_html
 from sonya.core.collectors.telegram.navigation import open_channel
 from sonya.core.collectors.telegram.status import Status
+
+logger = logging.getLogger(__name__)
 
 
 def collect_messages(
@@ -15,10 +19,10 @@ def collect_messages(
         check = open_channel(page, channel_url)
 
         if check != Status.ACCESSIBLE:
-            print(f"Канал {channel_url} недоступен: {check}")
+            logger.warning("Channel is unavailable: %s", check)
             return check
 
-        print(f"Канал {channel_url} доступен")
+        logger.info("Channel is accessible")
 
         result = get_message_container_html(page)
 

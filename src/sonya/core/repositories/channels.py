@@ -1,9 +1,12 @@
+import logging
 from collections.abc import Iterable
 
 from sonya.core.collectors.telegram.status import Status
 from sonya.core.database.models import Channel
 from sonya.core.database.session import get_session
 from sonya.core.utils.channel_url import normalize_channel_url
+
+logger = logging.getLogger(__name__)
 
 
 def save_channels_db(urls: Iterable[str]) -> None:
@@ -13,7 +16,7 @@ def save_channels_db(urls: Iterable[str]) -> None:
             if channel_url is None:
                 continue
             if session.query(Channel).filter_by(url=channel_url).first():
-                print("NOT UNIQUE")
+                logger.debug("Channel already exists; skipping")
                 continue
             session.add(Channel(url=channel_url))
 

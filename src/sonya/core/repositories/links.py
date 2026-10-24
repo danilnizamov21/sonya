@@ -1,8 +1,12 @@
+import logging
+
 from sqlalchemy import select
 
 from sonya.core.database.models import ChannelLink, Link
 from sonya.core.database.session import get_session
 from sonya.core.parser.pars import Message
+
+logger = logging.getLogger(__name__)
 
 
 def save_links(channel_id: int, message_list: list[Message]) -> None:
@@ -22,4 +26,4 @@ def save_links(channel_id: int, message_list: list[Message]) -> None:
                 )
                 session.add(channel_link)
 
-            print(f"URL: {url}, ID: {channel_id}")
+            logger.debug("Saved link for channel")

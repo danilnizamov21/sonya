@@ -1,7 +1,10 @@
+import logging
 from collections.abc import Iterable
 
 from sonya.core.repositories.channels import save_channels_db
 from sonya.core.utils.channel_url import normalize_channel_url
+
+logger = logging.getLogger(__name__)
 
 
 def upload(raw_channels: Iterable[str]):
@@ -18,7 +21,7 @@ def upload(raw_channels: Iterable[str]):
         channels.append(key)
 
     for channel in channels:
-        print(channel)
+        logger.debug("Uploading a channel")
     save_channels_db(channels)
-    print("SAVE")
+    logger.info("Saved %d channels", len(channels))
     return channels, duplicates

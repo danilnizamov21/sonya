@@ -1,3 +1,4 @@
+import logging
 import os
 import shutil
 from pathlib import Path
@@ -5,11 +6,13 @@ from pathlib import Path
 from sonya.core.parser.pars import parse_messages
 from sonya.core.repositories.links import save_links
 
+logger = logging.getLogger(__name__)
+
 
 def pars_messages() -> None:
     path_dir = Path("src/sonya/storage/html/")
     if not path_dir.exists():
-        print(f"Директория {path_dir} не существует.")
+        logger.warning("Directory %s does not exist", path_dir)
         return
 
     empty_dir = path_dir / "empty"
@@ -25,21 +28,23 @@ def pars_messages() -> None:
             if not parsed:
                 empty_dir.mkdir(exist_ok=True)
                 shutil.move(str(file_path), empty_dir / file_path.name)
-                print(f"{file_path.name}: ссылок нет, файл перенесён в {empty_dir}")
+                logger.info(
+                    "HTML file contains no links; moved it to the empty directory"
+                )
                 continue
 
             channel_id = int(file_path.stem)
             save_links(channel_id=channel_id, message_list=parsed)
 
             file_path.unlink()
-        except Exception as e:
-            print(f"Не обработан {file_path}: {e}")
+        except Exception:
+            logger.exception("Could not process an HTML file")
 
 
 def clear_storage(dir_path: str) -> None:
 
     if not os.path.exists(dir_path):
-        print(f"Директория {dir_path} не существует.")
+        logger.warning("Directory %s does not exist", dir_path)
         return
 
     for filename in os.listdir(dir_path):
@@ -49,5 +54,5 @@ def clear_storage(dir_path: str) -> None:
                 os.remove(full_path)
             elif os.path.isdir(full_path):
                 shutil.rmtree(full_path)
-        except Exception as e:
-            print(f"Не удалось удалить {full_path}: {e}")
+        except Exception:
+            logger.exception("Could not remove a storage item")

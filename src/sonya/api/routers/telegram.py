@@ -4,6 +4,7 @@ from fastapi import APIRouter, BackgroundTasks, HTTPException
 from fastapi.responses import FileResponse
 
 from sonya.api.core.job_guard import JobGuard
+from sonya.api.core.producer import publish_task
 from sonya.api.schemas.telegram import InspectChannelsRequest, LoginTelegramRequest
 from sonya.core.services.orchestrator import orchestrator_tg
 from sonya.core.services.parsing_service import clear_storage
@@ -21,12 +22,17 @@ def _run_inspect(status, limit, batch_size):
 
 
 @router.post("/inspect")
-def start_inspect(payload: InspectChannelsRequest, background_tasks: BackgroundTasks):
-    inspect_guard.acquire_or_409()
-    background_tasks.add_task(
-        _run_inspect, payload.status, payload.limit, payload.batch_size
+def start_inspect(payload: InspectChannelsRequest):
+    publish_task(
+        queue_name="sonya.inspect",
+        task={
+            "task_type": "inspect",
+            "limit": payload.limit,
+            "batch-size": payload.batch_size,
+            "status": payload.status,  # чекаем статутсы которые необходимо, допустиим хотим проверить все доступные каналы - status = accessible и тд.
+        },
     )
-    return {"status": "started"}
+    return {"task_status": "started"}
 
 
 @router.get("/inspect/status")

@@ -21,6 +21,7 @@ dependencies = [
     "typer[all]>=0.27.3",
     "fastapi[standard]>=0.146.0",
     "python-multipart>=0.0.32",
+    "pika>=1.4.4",
 ]
 
 [project.scripts]

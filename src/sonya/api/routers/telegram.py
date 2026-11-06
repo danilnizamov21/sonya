@@ -21,6 +21,16 @@ def _run_inspect(status, limit, batch_size):
     orchestrator_tg(status, limit, batch_size)
 
 
+@router.post("/add_task_test")
+def add_task():
+    publish_task(
+        queue_name="sonya.test",
+        task={
+            "task_type": "test",
+        },
+    )
+
+
 @router.post("/inspect")
 def start_inspect(payload: InspectChannelsRequest):
     publish_task(

@@ -1,6 +1,8 @@
 # sonya/worker/handlers.py
 
 
+import time
+
 from sonya.core.services.orchestrator import orchestrator_tg
 from sonya.core.services.tgstat_service import collect_tgstat
 
@@ -14,13 +16,17 @@ def handle_inspect(task: dict) -> None:
 
 
 def handle_collect(task: dict) -> None:
+    print("принято в обработку")
     collect_tgstat(task["topic"], task["pages"])
 
 
-HANDLERS = {
-    "inspect": handle_inspect,
-    "collect": handle_collect,
-}
+def test_handle(task: dict) -> None:
+    t_type = task.get("task_type")
+    time.sleep(10)
+    print(f"ОБРАБОТАНО, {t_type}")
+
+
+HANDLERS = {"inspect": handle_inspect, "collect": handle_collect, "test": test_handle}
 
 
 def handle_task(task: dict) -> None:

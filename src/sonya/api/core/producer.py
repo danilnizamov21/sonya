@@ -13,7 +13,7 @@ def publish_task(queue_name: str, task: dict) -> None:
     try:
         channel.basic_publish(
             exchange="",
-            routing_key="hello",
+            routing_key=queue_name,
             body=json.dumps(task).encode("utf-8"),
             properties=pika.BasicProperties(
                 delivery_mode=2, content_type="application/json"
